@@ -2,9 +2,9 @@
 ''' Module: simple async generator '''
 import asyncio
 import random
+from typing import AsyncGenerator
 
-
-async def async_generator():
+async def async_generator() -> AsyncGenerator[float, None]:
     """
     Asynchronous generator coroutine that yields 10 random
     floating-point numbers between 0 and 10,
