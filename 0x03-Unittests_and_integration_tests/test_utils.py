@@ -71,16 +71,20 @@ class TestGetJson(unittest.TestCase):
 class TestMemoize(unittest.TestCase):
     """ test memoize test class """
     def test_memoize(self):
+        """ test memoize method """
         class TestClass:
+            """ Test class """
             def __init__(self):
                 self.called = 0
 
             def a_method(self):
+                """ """
                 self.called += 1
                 return 42
 
             @memoize
             def a_property(self):
+                """ """
                 return self.a_method()
 
         obj = TestClass()
