@@ -6,7 +6,7 @@ Unit tests for the utils.access_nested_map function.
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -66,6 +66,30 @@ class TestGetJson(unittest.TestCase):
         mock_get.assert_called_once_with(test_url)
 
         self.assertEqual(result, test_payload)
+
+
+class TestMemoize(unittest.TestCase):
+    """ test memoize test class """
+    def test_memoize(self):
+        class TestClass:
+            def __init__(self):
+                self.called = 0
+
+            def a_method(self):
+                self.called += 1
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        obj = TestClass()
+        with patch.object(obj, 'a_method', side_effect=obj.a_method)\
+                as mock_method:
+            self.assertEqual(obj.a_property, 42)
+            self.assertEqual(obj.a_property, 42)
+            mock_method.assert_called_once()
+            self.assertEqual(obj.called, 1)
 
 
 if __name__ == '__main__':
